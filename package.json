@@ -1,0 +1,51 @@
+{
+  "name": "warp-audio-server",
+  "version": "0.0.1",
+  "proxy": "http://localhost:8712",
+  "main": "server.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@preaction/validation": "^2.0.1",
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "@preaction/bootstrap-clips": "^2.0.5",
+    "@preaction/inputs": "^2.0.1",
+    "@testing-library/jest-dom": "^5.11.2",
+    "@testing-library/react": "^10.4.7",
+    "@testing-library/user-event": "^12.1.0",
+    "animate.css": "^4.1.0",
+    "bootstrap": "^4.5.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.0.5",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-player": "^2.6.0",
+    "react-scripts": "3.4.1"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:prettier/recommended",
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": "defaults and supports es6-module",
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "scripts": {
+    "dev-client": "react-scripts start",
+    "dev-server": "nodemon server.js",
+    "build": "react-scripts build",
+    "start": "node server.js",
+    "test": "react-scripts test"
+  }
+}
