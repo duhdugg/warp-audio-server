@@ -19,7 +19,7 @@ The following commands must be installed and available within your PATH environm
 
 ### Installation
 
-```
+```bash
 git clone https://github.com/duhdugg/warp-audio-server.git
 cd warp-audio-server
 npm install
