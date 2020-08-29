@@ -12,6 +12,7 @@
 /build
 
 # misc
+.pw
 media/*
 .DS_Store
 .env.local
