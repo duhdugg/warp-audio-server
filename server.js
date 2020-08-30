@@ -106,7 +106,7 @@ try {
   const salt = bcrypt.genSaltSync()
   console.log(`pw not set. setting to: ${pw}`)
   pw = bcrypt.hashSync(pw, salt)
-  console.log('to set, execute: npm run set-pw')
+  console.log('to set, execute: npm run set-password')
 }
 
 const port = process.env.PORT || 8712
