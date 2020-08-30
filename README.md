@@ -38,4 +38,10 @@ You can run it on a different port with the following:
 
 ### Security
 
-As of right now, this should only be ran on private networks. There is no authentication mechanism, so anyone who can access the listening port will be able to send warp requests.
+By default, a new random password will be created and displayed for you when the server starts. You can set a persistent password by running the following:
+
+`npm run set-password`
+
+If you are running on a public interface, you should run it behind a
+load balancer such as Nginx with HTTPS enabled. An example configuration file
+can be found in the `examples` directory.
