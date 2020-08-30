@@ -195,6 +195,7 @@ class App extends React.Component {
                     name='password'
                     label='Password'
                     type='password'
+                    required
                     value={this.state.loginFormPw}
                     valueHandler={(value) => {
                       this.setState({ loginFormPw: value })

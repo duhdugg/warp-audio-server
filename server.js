@@ -14,17 +14,15 @@ const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 
-const oneYear = 365 * 24 * 60 * 60 * 1000
 const sessionConfig = {
   secret: String(+new Date()) + String(Math.random()),
   name: 'warp-audio-session',
   cookie: {
-    maxAge: oneYear,
     sameSite: 'strict',
     secure: process.env.WARP_COOKIE_SECURE,
   },
   store: new MemoryStore({
-    checkPeriod: oneYear / 365,
+    checkPeriod: 24 * 60 * 60 * 1000, // un dia
   }),
   proxy: !!process.env.WARP_COOKIE_PROXY,
   resave: false,
@@ -35,7 +33,18 @@ const Session = session(sessionConfig)
 app.use(Session)
 app.use(bodyParser.json())
 
-app.use('/media', express.static(path.join(__dirname, 'media')))
+const authenticationRequired = (req, res, next) => {
+  if (!req.session.authenticated) {
+    return res.status(401).send('')
+  }
+  next()
+}
+
+app.use(
+  '/media',
+  authenticationRequired,
+  express.static(path.join(__dirname, 'media'))
+)
 app.use('/', express.static(path.join(__dirname, 'build')))
 app
   .route('/api/session')
@@ -91,7 +100,7 @@ io.on('connection', (socket) => {
 
 let pw
 try {
-  pw = fs.readFileSync(path.resolve(__dirname, '.pw'))
+  pw = fs.readFileSync(path.resolve(__dirname, '.pw'), 'utf-8')
 } catch (e) {
   pw = String(+new Date()) + String(Math.random())
   const salt = bcrypt.genSaltSync()
