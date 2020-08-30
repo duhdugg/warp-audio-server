@@ -1,0 +1,29 @@
+# THIS FILE IS AN EXAMPLE SERVICE FILE FOR SYSTEMD
+[Unit]
+Description=warp-audio-server node app
+
+[Service]
+# SET THE ABSOLUTE PATH TO server.js
+ExecStart=/var/www/warp-audio-server/server.js
+# AUTOMATIC RESTARTS IN CASE THE SERVER EXITS
+Restart=always
+# BE SURE TO VERIFY THAT THIS USER HAS APPROPRIATE FILESYSTEM WRITE ACCESS
+# FOR THE media DIRECTORY
+User=nobody
+Group=nogroup
+# YOU MAY NEED TO SET PATH VARIABLE SO THE CORRECT VERSION OF NODE IS USED
+Environment=PATH=/opt/node-v12/bin:/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+# THESE COOKIE VARIABLES ARE THE MOST SECURE CHOICES AND
+# REQUIRE HTTPS CONFIGURATION ON A LOAD BALANCER
+Environment=WARP_COOKIE_SECURE=1
+Environment=WARP_COOKIE_PROXY=1
+# YOU MAY CHANGE THE DEFAULT PORT HERE
+Environment=WARP_PORT=8712
+# ABSOLUTE PATH TO warp-audio-server DIRECTORY
+WorkingDirectory=/var/www/warp-audio-server
+
+[Install]
+WantedBy=multi-user.target
+
+# vim: set ft=systemd:
