@@ -1,5 +1,6 @@
 #!/bin/env node
 
+const bodyParser = require('body-parser')
 const fs = require('fs')
 const path = require('path')
 const { exec } = require('child_process')
@@ -32,41 +33,37 @@ const sessionConfig = {
 
 const Session = session(sessionConfig)
 app.use(Session)
+app.use(bodyParser.json())
 
 app.use('/media', express.static(path.join(__dirname, 'media')))
 app.use('/', express.static(path.join(__dirname, 'build')))
+app
+  .route('/api/session')
+  .get((req, res) => {
+    res.json(req.session)
+  })
+  .post((req, res) => {
+    if (bcrypt.compareSync(req.body.pw, pw)) {
+      req.session.authenticated = true
+      res.json(req.session)
+    } else {
+      res.status(401).json({})
+    }
+  })
 
 io.use((socket, next) => {
   Session(socket.request, socket.request.res, next)
 })
 
 io.on('connection', (socket) => {
-  socket.on('session-request', (state, fn) => {
-    fn(socket.conn.request.session)
-  })
-
-  socket.on('login-request', (state, fn) => {
-    let retval = false
-    const authenticate = () => {
-      state.conn.request.session.authenticated = true
-    }
-    bcrypt.compare(state.password, pw, (err, response) => {
-      if (!err && response) {
-        authenticate()
-        retval = true
-      }
-      fn(retval)
-    })
-  })
-
   socket.on('warp-request', (state, fn) => {
     if (!socket.conn.request.session.authenticated) {
       return
     }
-    fn()
     if (urlValidator(state.url) || !state.url) {
       return
     }
+    fn()
     const url = state.url
     const shiftPitch = state.shiftPitch || '0'
     const stretchTempo = state.stretchTempo || '1'

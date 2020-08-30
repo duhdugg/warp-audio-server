@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React from 'react'
 import ReactPlayer from 'react-player'
 import io from 'socket.io-client'
@@ -28,10 +29,9 @@ class App extends React.Component {
 
   componentDidMount() {
     this.socket = io({ path: '/socket.io' })
-    this.socket.emit('session-request', {}, (data) => {
-      if (!data.authenticated) {
-        this.setState({ authenticated: false })
-      }
+    axios.get('/api/session').then((response) => {
+      const authenticated = !!response.data.authenticated
+      this.setState({ authenticated })
     })
     this.socket.on('warp-complete', (state) => {
       this.setState({
@@ -100,9 +100,6 @@ class App extends React.Component {
                 <h1 className='mb-3'>Warp Audio Server</h1>
                 <Input
                   type='url'
-                  onInput={(event) => {
-                    event.target.blur()
-                  }}
                   placeholder='URL'
                   required
                   value={this.state.url}
@@ -186,9 +183,12 @@ class App extends React.Component {
                   noValidate
                   onSubmit={(e) => {
                     e.preventDefault()
-                    this.socket.emit('login-request', {
-                      password: this.state.loginFormPw,
-                    })
+                    axios
+                      .post('/api/session', { pw: this.state.loginFormPw })
+                      .then((response) => {
+                        const authenticated = !!response.data.authenticated
+                        this.setState({ authenticated })
+                      })
                   }}
                 >
                   <Input
