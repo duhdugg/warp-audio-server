@@ -28,34 +28,39 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.socket = io({ path: '/socket.io' })
     axios.get('/api/session').then((response) => {
       const authenticated = !!response.data.authenticated
       this.setState({ authenticated })
     })
-    this.socket.on('warp-complete', (state) => {
-      this.setState({
-        processing: false,
-        audio: `/media/${btoa(state.url)}/warped_${state.shiftPitch}_${
-          state.stretchTempo
-        }.ogg`,
-        url: state.url,
-        shiftPitch: state.shiftPitch,
-        stretchTempo: state.stretchTempo,
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.authenticated && !prevState.authenticated) {
+      this.socket = io({ path: '/socket.io' })
+      this.socket.on('warp-complete', (state) => {
+        this.setState({
+          processing: false,
+          audio: `/media/${btoa(state.url)}/warped_${state.shiftPitch}_${
+            state.stretchTempo
+          }.ogg`,
+          url: state.url,
+          shiftPitch: state.shiftPitch,
+          stretchTempo: state.stretchTempo,
+        })
       })
-    })
-    this.socket.on('warp-error', (state) => {
-      this.setState({
-        processing: false,
-        audio: '',
-        url: state.url,
-        shiftPitch: state.shiftPitch,
-        stretchTempo: state.stretchTempo,
+      this.socket.on('warp-error', (state) => {
+        this.setState({
+          processing: false,
+          audio: '',
+          url: state.url,
+          shiftPitch: state.shiftPitch,
+          stretchTempo: state.stretchTempo,
+        })
+        alert(
+          'There was an error when trying to warp the link. Check the server console output.'
+        )
       })
-      alert(
-        'There was an error when trying to warp the link. Check the server console output.'
-      )
-    })
+    }
   }
 
   getValueHandler = (key) => {
