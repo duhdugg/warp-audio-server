@@ -20,4 +20,4 @@ else
   echo 'converting'
   ffmpeg -i warped_$2_$3.wav warped_$2_$3.ogg || exit 2
 fi
-echo warped_$2_$3.wav
+echo warped_$2_$3.ogg
