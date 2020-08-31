@@ -1,6 +1,6 @@
 ## Warp Audio Server
 
-This is a simple web application that takes a YouTube URL, and warps the audio according to user parameters.
+This is a simple web application that takes a YouTube URL and warps the audio according to user parameters.
 
 It is meant to help musicians experiment with key and tempo changes.
 
