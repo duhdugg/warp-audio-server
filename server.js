@@ -1,4 +1,4 @@
-#!/bin/env node
+#!/usr/bin/env node
 
 const bodyParser = require('body-parser')
 const fs = require('fs')
