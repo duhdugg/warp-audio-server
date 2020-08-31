@@ -28,7 +28,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/session').then((response) => {
+    axios.get(window.appRoot + '/api/session').then((response) => {
       const authenticated = !!response.data.authenticated
       this.setState({ authenticated })
     })
@@ -36,13 +36,15 @@ class App extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.authenticated && !prevState.authenticated) {
-      this.socket = io({ path: '/socket.io' })
+      this.socket = io({ path: window.appRoot + '/socket.io' })
       this.socket.on('warp-complete', (state) => {
         this.setState({
           processing: false,
-          audio: `/media/${btoa(state.url)}/warped_${state.shiftPitch}_${
-            state.stretchTempo
-          }.ogg`,
+          audio:
+            window.appRoot +
+            `/media/${btoa(state.url)}/warped_${state.shiftPitch}_${
+              state.stretchTempo
+            }.ogg`,
           url: state.url,
           shiftPitch: state.shiftPitch,
           stretchTempo: state.stretchTempo,
@@ -189,7 +191,9 @@ class App extends React.Component {
                   onSubmit={(e) => {
                     e.preventDefault()
                     axios
-                      .post('/api/session', { pw: this.state.loginFormPw })
+                      .post(window.appRoot + '/api/session', {
+                        pw: this.state.loginFormPw,
+                      })
                       .then((response) => {
                         const authenticated = !!response.data.authenticated
                         this.setState({ authenticated })
