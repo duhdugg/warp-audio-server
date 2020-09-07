@@ -2,11 +2,7 @@ import axios from 'axios'
 import React from 'react'
 import ReactPlayer from 'react-player'
 import io from 'socket.io-client'
-import {
-  AnimatedButton,
-  Boilerplate,
-  Spinner,
-} from '@preaction/bootstrap-clips'
+import { Boilerplate, Spinner } from '@preaction/bootstrap-clips'
 import { Input, Form } from '@preaction/inputs/dist/preaction-inputs.cjs.js'
 import { urlValidator } from '@preaction/validation'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -158,12 +154,13 @@ class App extends React.Component {
             />
             <hr />
             <div className='btn-group mb-3'>
-              <AnimatedButton
+              <button
+                className='btn btn-success btn-lg'
                 disabled={this.state.processing}
                 onClick={this.submit.bind(this)}
               >
                 Warp
-              </AnimatedButton>
+              </button>
             </div>
             {this.state.audio ? (
               <ReactPlayer
