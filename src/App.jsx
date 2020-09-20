@@ -6,7 +6,6 @@ import { Boilerplate, Spinner } from '@preaction/bootstrap-clips'
 import { Input, Form } from '@preaction/inputs/dist/preaction-inputs.cjs.js'
 import { urlValidator } from '@preaction/validation'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import 'animate.css/animate.min.css'
 import './App.css'
 
 class App extends React.Component {
