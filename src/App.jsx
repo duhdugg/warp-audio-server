@@ -62,6 +62,11 @@ class App extends React.Component {
 
   getValueHandler = (key) => {
     return (value) => {
+      if (key === 'stretchTempo') {
+        if (Number(value) < 0.01) {
+          value = '0.01'
+        }
+      }
       this.setState((state) => {
         state[key] = value
         return state
