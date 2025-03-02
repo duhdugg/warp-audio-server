@@ -12,7 +12,7 @@ The following commands must be installed and available within your PATH environm
 
 - node and npm (both part of [NodeJS](https://nodejs.org/))
 - bash
-- [youtube-dl](https://yt-dl.org/)
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp)
 - [ffmpeg](https://ffmpeg.org/)
 - [rubberband](https://github.com/breakfastquay/rubberband)
 - mkdir and base64 (both part of GNU coreutils)

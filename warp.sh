@@ -8,7 +8,7 @@ if test -s src.wav; then
   echo 'skipping download'
 else
   echo 'downloading'
-  youtube-dl -x -f 251 "$1" -o "src.opus" || exit 2
+  yt-dlp -x -f 251 "$1" -o "src" || exit 2
   echo 'converting'
   ffmpeg -i src.opus src.wav || exit 2
 fi

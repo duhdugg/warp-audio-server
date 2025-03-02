@@ -1,18 +1,21 @@
 #!/usr/bin/env node
 
-const bodyParser = require('body-parser')
-const fs = require('fs')
-const path = require('path')
-const { exec } = require('child_process')
-const express = require('express')
-const bcrypt = require('bcryptjs')
-const session = require('express-session')
-const MemoryStore = require('memorystore')(session)
-const { urlValidator } = require('@preaction/validation')
+import bodyParser from 'body-parser'
+import fs from 'fs'
+import path from 'path'
+import { exec } from 'child_process'
+import express from 'express'
+import bcrypt from 'bcryptjs'
+import session from 'express-session'
+import memorystore from 'memorystore'
+import { createServer } from 'http'
+import { Server } from 'socket.io'
 
+const __dirname = import.meta.dirname
+const MemoryStore = memorystore(session)
 const app = express()
-const http = require('http').Server(app)
-const io = require('socket.io')(http)
+const http = createServer(app)
+const io = new Server(http)
 
 const sessionConfig = {
   secret: String(+new Date()) + String(Math.random()),
@@ -27,6 +30,15 @@ const sessionConfig = {
   proxy: !!process.env.WARP_COOKIE_PROXY,
   resave: false,
   saveUninitialized: false,
+}
+
+const urlValidator = (value) => {
+  try {
+    new URL(value)
+    return true
+  } catch (e) {
+    return false
+  }
 }
 
 const Session = session(sessionConfig)
@@ -45,7 +57,7 @@ app.use(
   authenticationRequired,
   express.static(path.join(__dirname, 'media'))
 )
-app.use('/', express.static(path.join(__dirname, 'build')))
+app.use('/', express.static(path.join(__dirname, 'dist')))
 app
   .route('/api/session')
   .get((req, res) => {
@@ -61,15 +73,18 @@ app
   })
 
 io.use((socket, next) => {
-  Session(socket.request, socket.request.res, next)
+  Session(socket.request, {}, next)
 })
 
 io.on('connection', (socket) => {
   socket.on('warp-request', (state, fn) => {
+    console.debug(state)
     if (!socket.conn.request.session.authenticated) {
+      console.error('UNAUTHENTICATED_REQUEST')
       return
     }
-    if (urlValidator(state.url) || !state.url) {
+    if (!urlValidator(state.url) || !state.url) {
+      console.error('VALIDATION_FAIL')
       return
     }
     fn()

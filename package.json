@@ -1,57 +1,38 @@
 {
   "name": "warp-audio-server",
-  "version": "0.0.1",
-  "proxy": "http://localhost:8712",
+  "private": true,
+  "version": "0.1.0",
   "main": "server.js",
   "license": "MIT",
-  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev-client": "vite",
+    "dev-server": "nodemon server.js",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node server.js",
+    "set-password": "node scripts/set-password.js"
+  },
   "dependencies": {
-    "@preaction/validation": "^2.0.5",
-    "axios": "^0.21.1",
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "express-session": "^1.17.1",
-    "memorystore": "^1.6.2",
-    "password-prompt": "^1.1.2",
-    "socket.io": "^2.3.0"
+    "bcryptjs": "^3.0.2",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "memorystore": "^1.6.7",
+    "password-prompt": "^1.1.3",
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
-    "@preaction/bootstrap-clips": "^3.0.0-beta.0",
-    "@preaction/inputs": "^3.0.0-beta.0",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.0.4",
-    "@testing-library/user-event": "^12.1.5",
-    "bootstrap": "^4.5.2",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "nodemon": "^2.0.4",
-    "prettier": "^2.1.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-player": "^2.6.2",
-    "react-scripts": "3.4.3"
+    "@vitejs/plugin-vue": "^5.2.1",
+    "axios": "^1.8.1",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.5.2",
+    "socket.io-client": "^4.8.1",
+    "vite": "^6.2.0",
+    "vue": "^3.5.13"
   },
-  "eslintConfig": {
-    "extends": [
-      "plugin:prettier/recommended",
-      "react-app"
-    ]
-  },
-  "browserslist": {
-    "production": "defaults and supports es6-module",
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "scripts": {
-    "dev-client": "react-scripts start",
-    "dev-server": "nodemon server.js",
-    "build": "react-scripts build",
-    "set-password": "node scripts/set-password.js",
-    "start": "node server.js",
-    "test": "react-scripts test"
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
   }
 }
